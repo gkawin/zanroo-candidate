@@ -19,6 +19,11 @@ const Button = styled.button`
   }
 `
 
+const Input = styled.input`
+  font-size: 16px;
+  padding: 5px;
+`
+
 class App extends React.Component {
   getName = () => Faker.name.findName()
   getAge = () => Faker.random.number()
@@ -46,7 +51,31 @@ class App extends React.Component {
         style={{ backgroundColor: '#fafafa' }}
       >
 
-        <Button>Add</Button>
+        <AddForm />
+        <Button onClick={() => {}}>Add</Button>
+      </div>
+    )
+  }
+}
+
+class AddForm extends React.Component {
+  static propTypes = {
+    onCancel: PropTypes.func,
+    onSave: PropTypes.func,
+    shouldDisplay: PropTypes.bool
+  }
+
+  render () {
+    if (!this.props.shouldDisplay) return null
+    return (
+      <div>
+        <Input type='text' onChange={() => {}} />
+        <select>
+          <option>foo</option>
+        </select>
+        <Input type='text' onChange={() => { }} />
+        <Button onClick={this.props.onSave}>Save</Button>
+        <Button onClick={this.props.onCancel}>Cancel</Button>
       </div>
     )
   }
