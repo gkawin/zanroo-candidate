@@ -6,12 +6,15 @@ import { render } from 'react-dom'
 import Faker from 'faker'
 import ReactTable from 'react-table'
 
-import { Button } from './components/uikits'
+import { Button, Input } from './components/uikits'
 import AddForm from './components/AddForm'
 
 class App extends React.PureComponent {
 
-  state = { shouldDisplayAddItem: false }
+  state = {
+    shouldDisplayAddItem: false,
+    editing: false
+  }
 
   getName = () => Faker.name.findName()
   getAge = () => Faker.random.number()
@@ -26,7 +29,21 @@ class App extends React.PureComponent {
   }
 
   onEditRow = () => {
+    this.setState({ editing: true })
+  }
 
+  onUpdateRow = () => {
+    this.setState({ editing: false })
+  }
+
+  renderEditableRow = (cellInfo) => {
+    return (
+      <div
+        onBlur={this.onUpdateRow}
+      >
+        <Input ref={cellInfo.column.id} defaultValue={cellInfo.value} />
+      </div>
+    )
   }
 
   render () {
@@ -46,7 +63,13 @@ class App extends React.PureComponent {
           columns={[
             { Header: 'Name', accessor: 'name' },
             { Header: 'Age', accessor: 'age' },
-            { Header: 'Nickname', accessor: 'nickname' },
+            {
+              Header: 'Nickname',
+              accessor: 'nickname',
+              Cell: row => !this.state.editing ? (
+                <div>{row.value}</div>
+              ) : this.renderEditableRow(row)
+            },
             { Header: 'Action',
               Cell: row => {
                 return (
