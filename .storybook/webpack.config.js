@@ -9,8 +9,6 @@ module.exports = {
     ]
   },
   resolve: {
-    alias: Object.assign({ }, moduleAliases,
-      { 'mh-design$': require.resolve('../src/design') }
-    )
+    alias: moduleAliases
   }
 }

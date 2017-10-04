@@ -1,5 +1,6 @@
 const path = require('path')
 const moduleRulesBabel = require('./webpack/moduleRulesBabel')
+const moduleRulesStyle = require('./webpack/moduleRulesStyle')
 const moduleAliases = require('./webpack/moduleAliases')
 const modulePlugins = require('./webpack/modulePlugins')
 const development = process.env.NODE_ENV === 'development'
@@ -7,13 +8,11 @@ const development = process.env.NODE_ENV === 'development'
 module.exports = {
   devtool: 'eval',
   entry: {
-    app: path.resolve(__dirname, 'src', 'entry.js'),
-    vendor: [ 'jquery', 'lodash', 'react', 'react-dom', 'prop-types' ]
+    app: path.resolve(__dirname, 'src', 'App.js'),
+    vendor: [ 'react', 'react-dom', 'prop-types' ]
   },
   resolve: {
-    alias: Object.assign({ }, moduleAliases,
-      { 'mh-design$': require.resolve('./src/design') }
-    )
+    alias: moduleAliases
   },
   output: {
     filename: '[name].bundle.js',
@@ -25,9 +24,10 @@ module.exports = {
   module: {
     rules: [
       ...moduleRulesBabel,
+      ...moduleRulesStyle
     ]
   },
-  plugins: require('./webpack/plugins'),
+  plugins: modulePlugins,
   devServer: {
     compress: true,
     historyApiFallback: true

@@ -15,7 +15,7 @@ module.exports = [
     )
   }),
   new HtmlWebpackPlugin({
-    title: 'Mr Hotels :: Hotels Agency.',
+    title: 'Zanroo :: Candidate',
     template: path.join(__dirname, '..', 'src/template', 'index.html')
   })
 ]
