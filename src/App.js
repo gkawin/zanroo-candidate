@@ -1,8 +1,11 @@
+import 'react-table/react-table.css'
+
 import React from 'react'
 import PropTypes from 'prop-types'
 import { render } from 'react-dom'
 import Faker from 'faker'
 import styled from 'styled-components'
+import ReactTable from 'react-table'
 
 const Button = styled.button`
   width: ${props => props.small ? '50px' : '100px'};
@@ -24,10 +27,6 @@ const Input = styled.input`
   padding: 5px;
 `
 
-const Table = styled.table`
-  width: 100%;
-`
-
 class App extends React.Component {
 
   state = { shouldDisplayAddItem: false }
@@ -40,44 +39,35 @@ class App extends React.Component {
     this.setState({ shouldDisplayAddItem: !this.state.shouldDisplayAddItem })
   }
 
-  renderEditable () {
-    return (
-      <div
-        style={{ backgroundColor: '#fafafa' }}
-        contentEditable
-        suppressContentEditableWarning
-      >
-        test
-      </div>
-    )
-  }
-
   render () {
     return (
       <div
         style={{ backgroundColor: '#fafafa' }}
       >
-        <Table>
-          <thead>
-            <tr>
-              <td>Name</td>
-              <td>Age</td>
-              <td>Nickname</td>
-              <td>Action</td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{this.renderEditable()}</td>
-              <td>{this.renderEditable()}</td>
-              <td>{this.renderEditable()}</td>
-              <td>
-                <Button small>Edit</Button>
-                <Button small>Delete</Button>
-              </td>
-            </tr>
-          </tbody>
-        </Table>
+        <ReactTable
+          data={[
+            {
+              name: this.getName(),
+              age: this.getAge(),
+              nickname: this.getNickname()
+            }
+          ]}
+          columns={[
+            { Header: 'Name', accessor: 'name' },
+            { Header: 'Age', accessor: 'age' },
+            { Header: 'Nickname', accessor: 'nickname' },
+            { Header: 'Action',
+              Cell: row => {
+                return (
+                  <div>
+                    <Button>Edit</Button>
+                    <Button>Delete</Button>
+                  </div>
+                )
+              }
+            }
+          ]}
+        />
         <AddForm shouldDisplay={this.state.shouldDisplayAddItem} />
         <Button onClick={this.onAddItem}>{this.state.shouldDisplayAddItem ? 'Hide' : 'Add' }</Button>
       </div>
