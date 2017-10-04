@@ -5,9 +5,9 @@ import Faker from 'faker'
 import styled from 'styled-components'
 
 const Button = styled.button`
-  width: 100px;
+  width: ${props => props.small ? '50px' : '100px'};
   border: 1px solid gray;
-  padding: 10px;
+  padding: ${props => props.small ? '5px' : '10px'};
   cursor: pointer;
   background-color: white;
   outline: none;
@@ -24,23 +24,30 @@ const Input = styled.input`
   padding: 5px;
 `
 
+const Table = styled.table`
+  width: 100%;
+`
+
 class App extends React.Component {
+
+  state = { shouldDisplayAddItem: false }
+
   getName = () => Faker.name.findName()
   getAge = () => Faker.random.number()
   getNickname = () => Faker.name.lastName()
 
-  onBlur = (e) => {
-    console.log(e)
+  onAddItem = () => {
+    this.setState({ shouldDisplayAddItem: !this.state.shouldDisplayAddItem })
   }
 
-  renderEditable (cellInfo) {
+  renderEditable () {
     return (
       <div
         style={{ backgroundColor: '#fafafa' }}
         contentEditable
         suppressContentEditableWarning
       >
-        {cellInfo.value}
+        test
       </div>
     )
   }
@@ -50,9 +57,29 @@ class App extends React.Component {
       <div
         style={{ backgroundColor: '#fafafa' }}
       >
-
-        <AddForm />
-        <Button onClick={() => {}}>Add</Button>
+        <Table>
+          <thead>
+            <tr>
+              <td>Name</td>
+              <td>Age</td>
+              <td>Nickname</td>
+              <td>Action</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{this.renderEditable()}</td>
+              <td>{this.renderEditable()}</td>
+              <td>{this.renderEditable()}</td>
+              <td>
+                <Button small>Edit</Button>
+                <Button small>Delete</Button>
+              </td>
+            </tr>
+          </tbody>
+        </Table>
+        <AddForm shouldDisplay={this.state.shouldDisplayAddItem} />
+        <Button onClick={this.onAddItem}>{this.state.shouldDisplayAddItem ? 'Hide' : 'Add' }</Button>
       </div>
     )
   }
