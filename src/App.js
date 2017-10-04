@@ -1,28 +1,39 @@
-import 'react-table/react-table.css'
-
 import React from 'react'
 import PropTypes from 'prop-types'
-import ReactTable from 'react-table'
 import { render } from 'react-dom'
 import Faker from 'faker'
+import styled from 'styled-components'
+
+const Button = styled.button`
+  width: 100px;
+  border: 1px solid gray;
+  padding: 10px;
+  cursor: pointer;
+  background-color: white;
+  outline: none;
+  line-height: 20px;
+  transition: all 0.3s ease-in-out;
+  border-radius: 3px;
+  &:hover {
+    background-color: gray;
+  }
+`
 
 class App extends React.Component {
   getName = () => Faker.name.findName()
   getAge = () => Faker.random.number()
   getNickname = () => Faker.name.lastName()
 
-  getData = () => {
-    return
+  onBlur = (e) => {
+    console.log(e)
   }
 
   renderEditable (cellInfo) {
-    console.log(cellInfo)
     return (
       <div
         style={{ backgroundColor: '#fafafa' }}
         contentEditable
         suppressContentEditableWarning
-        onBlur={() => {}}
       >
         {cellInfo.value}
       </div>
@@ -34,35 +45,8 @@ class App extends React.Component {
       <div
         style={{ backgroundColor: '#fafafa' }}
       >
-        <ReactTable
-          data={[
-            {
-              name: this.getName(),
-              age: this.getAge(),
-              nickname: this.getNickname()
-            }
-          ]}
-          columns={[
-            {
-              Header: 'Name',
-              accessor: 'name',
-              Cell: this.renderEditable
-            },
-            {
-              Header: 'Age',
-              accessor: 'age',
-              Cell: this.renderEditable
-            },
-            {
-              Header: 'Nickname',
-              accessor: 'nickname',
-              Cell: this.renderEditable
-            },
-            {
-              Header: 'Action'
-            }
-          ]}
-        />
+
+        <Button>Add</Button>
       </div>
     )
   }
