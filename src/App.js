@@ -15,14 +15,17 @@ class App extends React.Component {
     return
   }
 
-  renderEditable () {
+  renderEditable (cellInfo) {
+    console.log(cellInfo)
     return (
       <div
         style={{ backgroundColor: '#fafafa' }}
         contentEditable
         suppressContentEditableWarning
         onBlur={() => {}}
-       />
+      >
+        {cellInfo.value}
+      </div>
     )
   }
 
@@ -42,19 +45,21 @@ class App extends React.Component {
           columns={[
             {
               Header: 'Name',
-              accessor: 'name'
+              accessor: 'name',
+              Cell: this.renderEditable
             },
             {
               Header: 'Age',
-              accessor: 'age'
+              accessor: 'age',
+              Cell: this.renderEditable
             },
             {
               Header: 'Nickname',
-              accessor: 'nickname'
+              accessor: 'nickname',
+              Cell: this.renderEditable
             },
             {
               Header: 'Action'
-
             }
           ]}
         />
