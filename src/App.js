@@ -4,30 +4,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { render } from 'react-dom'
 import Faker from 'faker'
-import styled from 'styled-components'
 import ReactTable from 'react-table'
 
-const Button = styled.button`
-  width: ${props => props.small ? '50px' : '100px'};
-  border: 1px solid gray;
-  padding: ${props => props.small ? '5px' : '10px'};
-  cursor: pointer;
-  background-color: white;
-  outline: none;
-  line-height: 20px;
-  transition: all 0.3s ease-in-out;
-  border-radius: 3px;
-  &:hover {
-    background-color: gray;
-  }
-`
+import { Button } from './components/uikits'
+import AddForm from './components/AddForm'
 
-const Input = styled.input`
-  font-size: 16px;
-  padding: 5px;
-`
-
-class App extends React.Component {
+class App extends React.PureComponent {
 
   state = { shouldDisplayAddItem: false }
 
@@ -36,7 +18,15 @@ class App extends React.Component {
   getNickname = () => Faker.name.lastName()
 
   onAddItem = () => {
-    this.setState({ shouldDisplayAddItem: !this.state.shouldDisplayAddItem })
+    this.setState({ shouldDisplayAddItem: true })
+  }
+
+  onCancelItem = () => {
+    this.setState({ shouldDisplayAddItem: false })
+  }
+
+  onEditRow = () => {
+
   }
 
   render () {
@@ -45,6 +35,7 @@ class App extends React.Component {
         style={{ backgroundColor: '#fafafa' }}
       >
         <ReactTable
+          defaultPageSize={5}
           data={[
             {
               name: this.getName(),
@@ -60,39 +51,19 @@ class App extends React.Component {
               Cell: row => {
                 return (
                   <div>
-                    <Button>Edit</Button>
-                    <Button>Delete</Button>
+                    <Button small onClick={this.onEditRow}>Edit</Button>
+                    <Button small>Delete</Button>
                   </div>
                 )
               }
             }
           ]}
         />
-        <AddForm shouldDisplay={this.state.shouldDisplayAddItem} />
-        <Button onClick={this.onAddItem}>{this.state.shouldDisplayAddItem ? 'Hide' : 'Add' }</Button>
-      </div>
-    )
-  }
-}
-
-class AddForm extends React.Component {
-  static propTypes = {
-    onCancel: PropTypes.func,
-    onSave: PropTypes.func,
-    shouldDisplay: PropTypes.bool
-  }
-
-  render () {
-    if (!this.props.shouldDisplay) return null
-    return (
-      <div>
-        <Input type='text' onChange={() => {}} />
-        <select>
-          <option>foo</option>
-        </select>
-        <Input type='text' onChange={() => { }} />
-        <Button onClick={this.props.onSave}>Save</Button>
-        <Button onClick={this.props.onCancel}>Cancel</Button>
+        <AddForm
+          shouldDisplay={this.state.shouldDisplayAddItem}
+          onCancelItem={this.onCancelItem}
+        />
+        <Button onClick={this.onAddItem}>Add</Button>
       </div>
     )
   }
