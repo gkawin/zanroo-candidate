@@ -1,4 +1,5 @@
 import Faker from 'faker'
+import _ from 'lodash'
 
 const storage = window.localStorage
 let initItems = []
@@ -12,7 +13,18 @@ export const initLocalStorage = (len = 5) => {
   for (let i = 0; i < len; i++) {
     initItems.push(getMockData())
   }
-  storage.setItem('initItems', JSON.stringify(initItems))
+  if (!_.isEmpty(storage.getItem('initItems'))) {
+    storage.getItem('initItems')
+  } else {
+    storage.setItem('initItems', JSON.stringify(initItems))
+  }
 }
 
 export const getData = () => JSON.parse(storage.getItem('initItems'))
+
+export const setData = async (payload) => {
+  if (_.isEmpty(payload)) return false
+  const updatedData = JSON.stringify(_.concat(getData(), payload))
+  await storage.setItem('initItems', updatedData)
+  console.log(getData())
+}

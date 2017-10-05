@@ -1,9 +1,8 @@
 import 'react-table/react-table.css'
 
 import React from 'react'
-import PropTypes from 'prop-types'
 import { render } from 'react-dom'
-import { getData, initLocalStorage } from './mockData'
+import { getData, initLocalStorage, setData } from './mockData'
 import ReactTable from 'react-table'
 
 import { Button, Input } from './components/uikits'
@@ -35,9 +34,12 @@ class App extends React.PureComponent {
   }
 
   onSaveItem = () => {
-    console.log(this.refs.addForm.name.value)
-    console.log(this.refs.addForm.age.value)
-    console.log(this.refs.addForm.nickname.value)
+    setData({
+      name: this.refs.addForm.name.value,
+      age: this.refs.addForm.age.value,
+      nickname: this.refs.addForm.nickname.value
+    })
+    this.forceUpdate()
   }
 
   renderEditableRow = (cellInfo) => {
@@ -56,7 +58,7 @@ class App extends React.PureComponent {
         style={{ backgroundColor: '#fafafa' }}
       >
         <ReactTable
-          defaultPageSize={5}
+          defaultPageSize={10}
           data={getData()}
           columns={[
             {
