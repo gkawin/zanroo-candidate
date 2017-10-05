@@ -14,23 +14,28 @@ class App extends React.PureComponent {
 
   state = {
     shouldDisplayAddItem: false,
-    editing: false
+    editing: { editable: false, at: undefined, value: null }
   }
 
-  onAddItem = async () => {
-    await this.setState({ shouldDisplayAddItem: true })
+  onAddItem = () => {
+    this.setState({ shouldDisplayAddItem: true })
   }
 
   onCancelItem = () => {
     this.setState({ shouldDisplayAddItem: false })
   }
 
-  onEditRow = () => {
-    this.setState({ editing: true })
+  onEditRow = (rowInfo) => {
+    this.setState({ editing: { editable: true, at: rowInfo.index } })
   }
 
-  onUpdateRow = () => {
-    this.setState({ editing: false })
+  onUpdateRow = async (rowInfo) => {
+    await this.setState({ editing: { editable: false, at: rowInfo.index } })
+    console.log(this.refs)
+  }
+
+  onChangeInputUpdate = ({ target }) => {
+    this.setState({ editing: { ...this.state.editing, value: target.value } })
   }
 
   onSaveItem = () => {
@@ -42,17 +47,23 @@ class App extends React.PureComponent {
     this.forceUpdate()
   }
 
-  renderEditableRow = (cellInfo) => {
-    return (
-      <div
-        onBlur={this.onUpdateRow}
-      >
-        <Input ref={cellInfo.column.id} defaultValue={cellInfo.value} />
-      </div>
-    )
+  renderEditableCell = (cellInfo) => {
+    if (!this.state.editing.editable) return (<div>{cellInfo.value}</div>)
+    if (this.state.editing.at === cellInfo.index) {
+      return (
+        <div
+          onBlur={() => this.onUpdateRow(cellInfo)}
+        >
+          <Input onChange={this.onChangeInputUpdate} value={cellInfo.value} />
+        </div>
+      )
+    } else {
+      return (<div>{cellInfo.value}</div>)
+    }
   }
 
   render () {
+    console.log(this.state.editing)
     return (
       <div
         style={{ backgroundColor: '#fafafa' }}
@@ -64,23 +75,23 @@ class App extends React.PureComponent {
             {
               Header: 'Name',
               accessor: 'name',
-              Cell: row => !this.state.editing ? (<div>{row.value}</div>) : this.renderEditableRow(row)
+              Cell: this.renderEditableCell
             },
             {
               Header: 'Age',
               accessor: 'age',
-              Cell: row => !this.state.editing ? (<div>{row.value}</div>) : this.renderEditableRow(row)
+              Cell: this.renderEditableCell
             },
             {
               Header: 'Nickname',
               accessor: 'nickname',
-              Cell: row => !this.state.editing ? (<div>{row.value}</div>) : this.renderEditableRow(row)
+              Cell: this.renderEditableCell
             },
             { Header: 'Action',
-              Cell: () => {
+              Cell: (row) => {
                 return (
                   <div>
-                    <Button small onClick={this.onEditRow}>Edit</Button>
+                    <Button small onClick={() => this.onEditRow(row)}>Edit</Button>
                     <Button small>Delete</Button>
                   </div>
                 )

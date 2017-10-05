@@ -19,6 +19,7 @@ module.exports = [
         plugins: [
           [ 'styled-components', { 'displayName': development } ],
           'transform-runtime',
+          'transform-object-rest-spread',
           'transform-decorators-legacy',
           'transform-class-properties'
         ]
