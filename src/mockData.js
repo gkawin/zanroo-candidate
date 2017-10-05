@@ -6,7 +6,7 @@ let initItems = []
 export const initLocalStorage = (len = 5) => {
   const getMockData = () => ({
     name: Faker.name.findName(),
-    age: Faker.random.number(),
+    age: Math.floor(Math.random() * 30),
     nickname: Faker.name.lastName()
   })
   for (let i = 0; i < len; i++) {

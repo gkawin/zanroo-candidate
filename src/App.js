@@ -18,8 +18,8 @@ class App extends React.PureComponent {
     editing: false
   }
 
-  onAddItem = () => {
-    this.setState({ shouldDisplayAddItem: true })
+  onAddItem = async () => {
+    await this.setState({ shouldDisplayAddItem: true })
   }
 
   onCancelItem = () => {
@@ -32,6 +32,12 @@ class App extends React.PureComponent {
 
   onUpdateRow = () => {
     this.setState({ editing: false })
+  }
+
+  onSaveItem = () => {
+    console.log(this.refs.addForm.name.value)
+    console.log(this.refs.addForm.age.value)
+    console.log(this.refs.addForm.nickname.value)
   }
 
   renderEditableRow = (cellInfo) => {
@@ -81,7 +87,9 @@ class App extends React.PureComponent {
           ]}
         />
         <AddForm
+          ref='addForm'
           shouldDisplay={this.state.shouldDisplayAddItem}
+          onSaveItem={this.onSaveItem}
           onCancelItem={this.onCancelItem}
         />
         <Button onClick={this.onAddItem}>Add</Button>

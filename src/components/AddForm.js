@@ -1,12 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { Input, Button } from './uikits'
+import { Input, Button, Select } from './uikits'
 
 class AddForm extends React.PureComponent {
   static propTypes = {
     onCancelItem: PropTypes.func,
-    onSave: PropTypes.func,
+    onSaveItem: PropTypes.func,
     shouldDisplay: PropTypes.bool
   }
 
@@ -14,12 +14,12 @@ class AddForm extends React.PureComponent {
     if (!this.props.shouldDisplay) return null
     return (
       <div>
-        <Input type='text' onChange={() => { }} />
-        <select>
+        <Input type='text' innerRef={(comp) => { this.name = comp }} />
+        <Select innerRef={(comp) => { this.age = comp }}>
           <option>foo</option>
-        </select>
-        <Input type='text' onChange={() => { }} />
-        <Button onClick={this.props.onSave}>Save</Button>
+        </Select>
+        <Input type='text' innerRef={(comp) => { this.nickname = comp }} />
+        <Button onClick={this.props.onSaveItem}>Save</Button>
         <Button onClick={this.props.onCancelItem}>Cancel</Button>
       </div>
     )

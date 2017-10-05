@@ -19,3 +19,7 @@ export const Input = styled.input`
   font-size: 16px;
   padding: 5px;
 `
+
+export const Select = styled.select`
+  width: 100px;
+`
