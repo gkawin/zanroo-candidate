@@ -5,6 +5,7 @@ class Storage {
   constructor () {
     this.store = window.sessionStorage || { }
     this.initItems = []
+    this._storageName = 'initItems'
   }
 
   initLocalStorage (len = 5) {
@@ -23,8 +24,14 @@ class Storage {
     }
   }
 
-  getData () {
-    return JSON.parse(this.store.getItem('initItems'))
+  find (storageName) {
+    return JSON.parse(this.store.getItem(storageName || this._storageName))
+  }
+
+  async insert (payload) {
+    if (_.isEmpty(payload)) return false
+    const insertData = JSON.stringify(_.concat(this.find(), payload))
+    await this.store.setItem('initItems', insertData)
   }
 }
 

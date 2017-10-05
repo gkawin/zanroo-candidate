@@ -1,4 +1,5 @@
 import Storage from './Storage'
+import _ from 'lodash'
 
 describe('Storage', () => {
   const store = new Storage()
@@ -9,7 +10,20 @@ describe('Storage', () => {
   })
 
   it('should return object type', () => {
-    const result = store.getData()
+    const result = store.find()
     expect(typeof result).toBe('object')
+  })
+
+  it('should add item', async () => {
+    await store.insert({
+      name: 'MR. JOHN DOWE',
+      age: 30,
+      nickname: 'NEW ONE!!!'
+    })
+    expect(_.some(store.find(), {
+      name: 'MR. JOHN DOWE',
+      age: 30,
+      nickname: 'NEW ONE!!!'
+    })).toBe(true)
   })
 })
