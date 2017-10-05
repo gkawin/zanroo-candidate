@@ -51,13 +51,13 @@ class App extends React.PureComponent {
     })
   }
 
-  onSaveItem = () => {
-    // setData({
-    //   name: this.refs.addForm.name.value,
-    //   age: this.refs.addForm.age.value,
-    //   nickname: this.refs.addForm.nickname.value
-    // })
-    // this.forceUpdate()
+  onSaveItem = async () => {
+    await store.insert({
+      name: this.refs.addForm.name.value,
+      age: this.refs.addForm.age.value,
+      nickname: this.refs.addForm.nickname.value
+    })
+    this.forceUpdate()
   }
 
   onDeleteRow = async (rowInfo) => {
