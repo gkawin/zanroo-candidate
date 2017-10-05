@@ -7,6 +7,7 @@ class Storage {
     this.store = window.sessionStorage || { }
     this.initItems = []
     this._storageName = 'initItems'
+    this.initLocalStorage()
   }
 
   initLocalStorage (len = 5) {

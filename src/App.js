@@ -2,7 +2,6 @@ import 'react-table/react-table.css'
 
 import React from 'react'
 import { render } from 'react-dom'
-// import { getData, initLocalStorage, setData, setAllData } from './mockData'
 import ReactTable from 'react-table'
 import _ from 'lodash'
 import u from 'updeep'
@@ -11,11 +10,9 @@ import Storage from './lib/Storage'
 import { Button, Input } from './components/uikits'
 import AddForm from './components/AddForm'
 
-const store = new Storage()
-
 class App extends React.PureComponent {
-
   state = {
+    store: new Storage(),
     shouldDisplayAddItem: false,
     editItem: { editable: false, at: undefined, payload: { } }
   }
@@ -35,7 +32,7 @@ class App extends React.PureComponent {
   onUpdateRow = async (rowInfo) => {
     await this.setState({ editItem: u({ editable: false })(this.state.editItem) })
     const { at, payload } = this.state.editItem
-    await store.updateAt(at, payload)
+    await this.state.store.updateAt(at, payload)
     this.forceUpdate()
   }
 
@@ -52,7 +49,7 @@ class App extends React.PureComponent {
   }
 
   onSaveItem = async () => {
-    await store.insert({
+    await this.state.store.insert({
       name: this.refs.addForm.name.value,
       age: this.refs.addForm.age.value,
       nickname: this.refs.addForm.nickname.value
@@ -61,10 +58,9 @@ class App extends React.PureComponent {
   }
 
   onDeleteRow = async (rowInfo) => {
-    await this.setState({ editItem: { at: rowInfo.index, payload: rowInfo.original } })
-    // const items = _.reject(getData(), (val, key) => (key === this.state.editItem.at))
-    // await setAllData(items)
-    // this.forceUpdate()
+    await this.setState({ editItem: u({ at: rowInfo.index })(this.state.editItem) })
+    await this.state.store.deleteAt(this.state.editItem.at)
+    this.forceUpdate()
   }
 
   renderEditableCell = (cellInfo) => {
@@ -91,7 +87,7 @@ class App extends React.PureComponent {
       >
         <ReactTable
           defaultPageSize={10}
-          data={store.find()}
+          data={this.state.store.find()}
           columns={[
             {
               Header: 'Name',
