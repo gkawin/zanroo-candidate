@@ -10,13 +10,13 @@ class Storage {
   }
 
   initLocalStorage (len = 5) {
-    const getMockData = () => ({
+    const _getMockData = () => ({
       name: Faker.name.findName(),
       age: Math.floor(Math.random() * 30),
       nickname: Faker.name.lastName()
     })
     for (let i = 0; i < len; i++) {
-      this.initItems.push(getMockData())
+      this.initItems.push(_getMockData())
     }
     if (!_.isEmpty(this.store.getItem('initItems'))) {
       this.store.getItem('initItems')
@@ -25,8 +25,8 @@ class Storage {
     }
   }
 
-  find (storageName) {
-    return JSON.parse(this.store.getItem(storageName || this._storageName))
+  find () {
+    return JSON.parse(this.store.getItem(this._storageName))
   }
 
   async insert (payload) {

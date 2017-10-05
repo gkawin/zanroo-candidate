@@ -8,7 +8,7 @@ const development = process.env.NODE_ENV === 'development'
 module.exports = {
   devtool: 'eval',
   entry: {
-    app: path.resolve(__dirname, 'src', 'App.js'),
+    app: path.resolve(__dirname, 'src', 'entry.js'),
     vendor: [ 'react', 'react-dom', 'prop-types' ]
   },
   resolve: {

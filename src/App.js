@@ -9,13 +9,15 @@ import _ from 'lodash'
 import { Button, Input } from './components/uikits'
 import AddForm from './components/AddForm'
 
-initLocalStorage()
-
 class App extends React.PureComponent {
 
   state = {
     shouldDisplayAddItem: false,
     editing: { editable: false, at: undefined, payload: { } }
+  }
+
+  componentWillMount () {
+    initLocalStorage()
   }
 
   onAddItem = () => {
