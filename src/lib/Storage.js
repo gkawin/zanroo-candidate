@@ -40,6 +40,14 @@ class Storage {
     const updatedItems = u({ [at]: payload })(items)
     await this.store.setItem('initItems', JSON.stringify(updatedItems))
   }
+
+  async deleteAt (at) {
+    const items = this.find()
+    const targetItem = items[at]
+    if (!targetItem) return false
+    const updatedItems = _.reject(items, (value, key) => key === at)
+    await this.store.setItem('initItems', JSON.stringify(updatedItems))
+  }
 }
 
 export default Storage

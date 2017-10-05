@@ -27,7 +27,7 @@ describe('Storage', () => {
     })).toBe(true)
   })
 
-  it('should update at item index', async () => {
+  it('should update as a index item', async () => {
     const items = store.find()
     expect(_.isEqual(_.last(items), {
       name: 'MR. JOHN DOWE',
@@ -40,5 +40,10 @@ describe('Storage', () => {
       age: 66
     })
     expect(_.some(store.find(), { name: 'UPDATED DOWE', age: 66 })).toBe(true)
+  })
+
+  it('should delete as a index item', async () => {
+    await store.deleteAt(10)
+    expect(_.some(store.find(), { name: 'UPDATED DOWE', age: 66 })).toBe(false)
   })
 })
