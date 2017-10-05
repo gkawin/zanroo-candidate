@@ -57,6 +57,13 @@ class App extends React.PureComponent {
     this.forceUpdate()
   }
 
+  onDeleteRow = async (rowInfo) => {
+    await this.setState({ editing: { at: rowInfo.index, payload: rowInfo.original } })
+    const items = _.reject(getData(), (val, key) => (key === this.state.editing.at))
+    await setAllData(items)
+    this.forceUpdate()
+  }
+
   renderEditableCell = (cellInfo) => {
     if (!this.state.editing.editable) return (<div>{cellInfo.value}</div>)
     if (this.state.editing.at === cellInfo.index) {
@@ -103,7 +110,7 @@ class App extends React.PureComponent {
                 return (
                   <div>
                     <Button small onClick={() => this.onEditRow(row)}>Edit</Button>
-                    <Button small>Delete</Button>
+                    <Button small onClick={() => this.onDeleteRow(row)}>Delete</Button>
                   </div>
                 )
               }

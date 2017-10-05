@@ -29,6 +29,5 @@ export const setData = async (payload) => {
 }
 
 export const setAllData = async (payload) => {
-  if (_.isEmpty(payload)) return false
   await storage.setItem('initItems', JSON.stringify(payload))
 }
