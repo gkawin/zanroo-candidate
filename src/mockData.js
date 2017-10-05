@@ -1,7 +1,7 @@
 import Faker from 'faker'
 import _ from 'lodash'
 
-const storage = window.localStorage
+const storage = window.sessionStorage
 let initItems = []
 
 export const initLocalStorage = (len = 5) => {

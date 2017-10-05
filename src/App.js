@@ -18,6 +18,12 @@ class App extends React.PureComponent {
     editing: { editable: false, at: undefined, payload: { } }
   }
 
+  componentDidMount () {
+    window.addEventListener('keydown', (e) => {
+      e.preventDefault()
+    })
+  }
+
   onAddItem = () => {
     this.setState({ shouldDisplayAddItem: true })
   }
@@ -75,7 +81,6 @@ class App extends React.PureComponent {
   }
 
   render () {
-    console.log(this.state.editing)
     return (
       <div
         style={{ backgroundColor: '#fafafa' }}
