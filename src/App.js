@@ -5,6 +5,7 @@ import { render } from 'react-dom'
 // import { getData, initLocalStorage, setData, setAllData } from './mockData'
 import ReactTable from 'react-table'
 import _ from 'lodash'
+import u from 'updeep'
 
 import Storage from './lib/Storage'
 import { Button, Input } from './components/uikits'
@@ -16,7 +17,7 @@ class App extends React.PureComponent {
 
   state = {
     shouldDisplayAddItem: false,
-    editing: { editable: false, at: undefined, payload: { } }
+    editItem: { editable: false, at: undefined, payload: { } }
   }
 
   onAddItem = () => {
@@ -28,23 +29,25 @@ class App extends React.PureComponent {
   }
 
   onEditRow = (rowInfo) => {
-    this.setState({ editing: { editable: true, at: rowInfo.index, payload: rowInfo.original } })
+    this.setState({ editItem: { editable: true, at: rowInfo.index, payload: rowInfo.original } })
   }
 
   onUpdateRow = async (rowInfo) => {
-    await this.setState({ editing: { ...this.state.editing, editable: false, at: rowInfo.index } })
-
-    // await setAllData(lastestData)
-    // this.forceUpdate()
+    await this.setState({ editItem: u({ editable: false })(this.state.editItem) })
+    const { at, payload } = this.state.editItem
+    await store.updateAt(at, payload)
+    this.forceUpdate()
   }
 
   onChangeInputUpdate = ({ target }, cellInfo) => {
     const affectAtColumn = cellInfo.column.id
-    this.setState({ editing: { ...this.state.editing,
-      payload: {
-        ...this.state.editing.payload,
-        [affectAtColumn]: target.value
-      } }
+    this.setState({
+      editItem: {
+        ...this.state.editItem,
+        payload: {
+          ...this.state.editItem.payload,
+          [affectAtColumn]: target.value
+        } }
     })
   }
 
@@ -58,17 +61,17 @@ class App extends React.PureComponent {
   }
 
   onDeleteRow = async (rowInfo) => {
-    await this.setState({ editing: { at: rowInfo.index, payload: rowInfo.original } })
-    // const items = _.reject(getData(), (val, key) => (key === this.state.editing.at))
+    await this.setState({ editItem: { at: rowInfo.index, payload: rowInfo.original } })
+    // const items = _.reject(getData(), (val, key) => (key === this.state.editItem.at))
     // await setAllData(items)
     // this.forceUpdate()
   }
 
   renderEditableCell = (cellInfo) => {
-    if (!this.state.editing.editable) return (<div>{cellInfo.value}</div>)
-    if (this.state.editing.at === cellInfo.index) {
+    if (!this.state.editItem.editable) return (<div>{cellInfo.value}</div>)
+    if (this.state.editItem.at === cellInfo.index) {
       const affectAtColumn = cellInfo.column.id
-      const representValue = _.get(this.state.editing.payload, affectAtColumn, '')
+      const representValue = _.get(this.state.editItem.payload, affectAtColumn, '')
       return (
         <div
           onBlur={() => this.onUpdateRow(cellInfo)}
