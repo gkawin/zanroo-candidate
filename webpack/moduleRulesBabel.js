@@ -11,6 +11,7 @@ module.exports = [
     use: {
       loader: 'babel-loader',
       options: {
+        babelrc: false,
         cacheDirectory: true,
         presets: [
           [ 'env', { module: false } ],

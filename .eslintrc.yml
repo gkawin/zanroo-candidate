@@ -5,6 +5,7 @@ parserOptions:
   ecmaFeatures:
     jsx: true
 env:
+  mocha: true
   browser: true
   node: true
   jquery: true
