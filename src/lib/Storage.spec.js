@@ -26,4 +26,19 @@ describe('Storage', () => {
       nickname: 'NEW ONE!!!'
     })).toBe(true)
   })
+
+  it('should update at item index', async () => {
+    const items = store.find()
+    expect(_.isEqual(_.last(items), {
+      name: 'MR. JOHN DOWE',
+      age: 30,
+      nickname: 'NEW ONE!!!'
+    })).toBe(true)
+
+    await store.updateAt(10, {
+      name: 'UPDATED DOWE',
+      age: 66
+    })
+    expect(_.some(store.find(), { name: 'UPDATED DOWE', age: 66 })).toBe(true)
+  })
 })

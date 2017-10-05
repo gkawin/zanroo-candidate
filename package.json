@@ -16,7 +16,8 @@
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-table": "^6.6.0",
-    "styled-components": "^2.2.1"
+    "styled-components": "^2.2.1",
+    "updeep": "^1.0.0"
   },
   "devDependencies": {
     "@storybook/react": "^3.2.8",

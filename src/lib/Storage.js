@@ -1,5 +1,6 @@
 import Faker from 'faker'
 import _ from 'lodash'
+import u from 'updeep'
 
 class Storage {
   constructor () {
@@ -32,6 +33,12 @@ class Storage {
     if (_.isEmpty(payload)) return false
     const insertData = JSON.stringify(_.concat(this.find(), payload))
     await this.store.setItem('initItems', insertData)
+  }
+
+  async updateAt (at, payload) {
+    const items = this.find()
+    const updatedItems = u({ [at]: payload })(items)
+    await this.store.setItem('initItems', JSON.stringify(updatedItems))
   }
 }
 
