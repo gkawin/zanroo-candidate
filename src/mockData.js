@@ -26,5 +26,9 @@ export const setData = async (payload) => {
   if (_.isEmpty(payload)) return false
   const updatedData = JSON.stringify(_.concat(getData(), payload))
   await storage.setItem('initItems', updatedData)
-  console.log(getData())
+}
+
+export const setAllData = async (payload) => {
+  if (_.isEmpty(payload)) return false
+  await storage.setItem('initItems', JSON.stringify(payload))
 }

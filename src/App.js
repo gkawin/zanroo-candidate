@@ -2,7 +2,7 @@ import 'react-table/react-table.css'
 
 import React from 'react'
 import { render } from 'react-dom'
-import { getData, initLocalStorage, setData } from './mockData'
+import { getData, initLocalStorage, setData, setAllData } from './mockData'
 import ReactTable from 'react-table'
 import _ from 'lodash'
 
@@ -31,7 +31,11 @@ class App extends React.PureComponent {
   }
 
   onUpdateRow = async (rowInfo) => {
-    await this.setState({ editing: { editable: false, at: rowInfo.index } })
+    await this.setState({ editing: { ...this.state.editing, editable: false, at: rowInfo.index } })
+    const lastestData = await getData()
+    lastestData[this.state.editing.at] = this.state.editing.payload
+    await setAllData(lastestData)
+    this.forceUpdate()
   }
 
   onChangeInputUpdate = ({ target }, cellInfo) => {
@@ -57,7 +61,7 @@ class App extends React.PureComponent {
     if (!this.state.editing.editable) return (<div>{cellInfo.value}</div>)
     if (this.state.editing.at === cellInfo.index) {
       const affectAtColumn = cellInfo.column.id
-      const representValue = _.get(this.state.editing.payload, affectAtColumn, 'none')
+      const representValue = _.get(this.state.editing.payload, affectAtColumn, '')
       return (
         <div
           onBlur={() => this.onUpdateRow(cellInfo)}
