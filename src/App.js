@@ -2,22 +2,21 @@ import 'react-table/react-table.css'
 
 import React from 'react'
 import { render } from 'react-dom'
-import { getData, initLocalStorage, setData, setAllData } from './mockData'
+// import { getData, initLocalStorage, setData, setAllData } from './mockData'
 import ReactTable from 'react-table'
 import _ from 'lodash'
 
+import Storage from './lib/Storage'
 import { Button, Input } from './components/uikits'
 import AddForm from './components/AddForm'
+
+const store = new Storage()
 
 class App extends React.PureComponent {
 
   state = {
     shouldDisplayAddItem: false,
     editing: { editable: false, at: undefined, payload: { } }
-  }
-
-  componentWillMount () {
-    initLocalStorage()
   }
 
   onAddItem = () => {
@@ -34,10 +33,9 @@ class App extends React.PureComponent {
 
   onUpdateRow = async (rowInfo) => {
     await this.setState({ editing: { ...this.state.editing, editable: false, at: rowInfo.index } })
-    const lastestData = await getData()
-    lastestData[this.state.editing.at] = this.state.editing.payload
-    await setAllData(lastestData)
-    this.forceUpdate()
+
+    // await setAllData(lastestData)
+    // this.forceUpdate()
   }
 
   onChangeInputUpdate = ({ target }, cellInfo) => {
@@ -51,19 +49,19 @@ class App extends React.PureComponent {
   }
 
   onSaveItem = () => {
-    setData({
-      name: this.refs.addForm.name.value,
-      age: this.refs.addForm.age.value,
-      nickname: this.refs.addForm.nickname.value
-    })
-    this.forceUpdate()
+    // setData({
+    //   name: this.refs.addForm.name.value,
+    //   age: this.refs.addForm.age.value,
+    //   nickname: this.refs.addForm.nickname.value
+    // })
+    // this.forceUpdate()
   }
 
   onDeleteRow = async (rowInfo) => {
     await this.setState({ editing: { at: rowInfo.index, payload: rowInfo.original } })
-    const items = _.reject(getData(), (val, key) => (key === this.state.editing.at))
-    await setAllData(items)
-    this.forceUpdate()
+    // const items = _.reject(getData(), (val, key) => (key === this.state.editing.at))
+    // await setAllData(items)
+    // this.forceUpdate()
   }
 
   renderEditableCell = (cellInfo) => {
@@ -90,7 +88,7 @@ class App extends React.PureComponent {
       >
         <ReactTable
           defaultPageSize={10}
-          data={getData()}
+          data={store.find()}
           columns={[
             {
               Header: 'Name',
