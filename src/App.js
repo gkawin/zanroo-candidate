@@ -3,11 +3,13 @@ import 'react-table/react-table.css'
 import React from 'react'
 import PropTypes from 'prop-types'
 import { render } from 'react-dom'
-import Faker from 'faker'
+import { getData, initLocalStorage } from './mockData'
 import ReactTable from 'react-table'
 
 import { Button, Input } from './components/uikits'
 import AddForm from './components/AddForm'
+
+initLocalStorage()
 
 class App extends React.PureComponent {
 
@@ -15,10 +17,6 @@ class App extends React.PureComponent {
     shouldDisplayAddItem: false,
     editing: false
   }
-
-  getName = () => Faker.name.findName()
-  getAge = () => Faker.random.number()
-  getNickname = () => Faker.name.lastName()
 
   onAddItem = () => {
     this.setState({ shouldDisplayAddItem: true })
@@ -53,13 +51,7 @@ class App extends React.PureComponent {
       >
         <ReactTable
           defaultPageSize={5}
-          data={[
-            {
-              name: this.getName(),
-              age: this.getAge(),
-              nickname: this.getNickname()
-            }
-          ]}
+          data={getData()}
           columns={[
             { Header: 'Name', accessor: 'name' },
             { Header: 'Age', accessor: 'age' },
