@@ -4,6 +4,7 @@ import React from 'react'
 import { render } from 'react-dom'
 import { getData, initLocalStorage, setData } from './mockData'
 import ReactTable from 'react-table'
+import _ from 'lodash'
 
 import { Button, Input } from './components/uikits'
 import AddForm from './components/AddForm'
@@ -14,7 +15,7 @@ class App extends React.PureComponent {
 
   state = {
     shouldDisplayAddItem: false,
-    editing: { editable: false, at: undefined, value: null }
+    editing: { editable: false, at: undefined, payload: { } }
   }
 
   onAddItem = () => {
@@ -26,16 +27,21 @@ class App extends React.PureComponent {
   }
 
   onEditRow = (rowInfo) => {
-    this.setState({ editing: { editable: true, at: rowInfo.index } })
+    this.setState({ editing: { editable: true, at: rowInfo.index, payload: rowInfo.original } })
   }
 
   onUpdateRow = async (rowInfo) => {
     await this.setState({ editing: { editable: false, at: rowInfo.index } })
-    console.log(this.refs)
   }
 
-  onChangeInputUpdate = ({ target }) => {
-    this.setState({ editing: { ...this.state.editing, value: target.value } })
+  onChangeInputUpdate = ({ target }, cellInfo) => {
+    const affectAtColumn = cellInfo.column.id
+    this.setState({ editing: { ...this.state.editing,
+      payload: {
+        ...this.state.editing.payload,
+        [affectAtColumn]: target.value
+      } }
+    })
   }
 
   onSaveItem = () => {
@@ -50,11 +56,13 @@ class App extends React.PureComponent {
   renderEditableCell = (cellInfo) => {
     if (!this.state.editing.editable) return (<div>{cellInfo.value}</div>)
     if (this.state.editing.at === cellInfo.index) {
+      const affectAtColumn = cellInfo.column.id
+      const representValue = _.get(this.state.editing.payload, affectAtColumn, 'none')
       return (
         <div
           onBlur={() => this.onUpdateRow(cellInfo)}
         >
-          <Input onChange={this.onChangeInputUpdate} value={cellInfo.value} />
+          <Input onChange={(e) => this.onChangeInputUpdate(e, cellInfo)} value={representValue} />
         </div>
       )
     } else {
