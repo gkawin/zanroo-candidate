@@ -22,6 +22,10 @@ class Storage {
       this.store.setItem('initItems', JSON.stringify(this.initItems))
     }
   }
+
+  getData () {
+    return JSON.parse(this.store.getItem('initItems'))
+  }
 }
 
 export default Storage
