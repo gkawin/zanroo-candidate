@@ -53,17 +53,23 @@ class App extends React.PureComponent {
           defaultPageSize={5}
           data={getData()}
           columns={[
-            { Header: 'Name', accessor: 'name' },
-            { Header: 'Age', accessor: 'age' },
+            {
+              Header: 'Name',
+              accessor: 'name',
+              Cell: row => !this.state.editing ? (<div>{row.value}</div>) : this.renderEditableRow(row)
+            },
+            {
+              Header: 'Age',
+              accessor: 'age',
+              Cell: row => !this.state.editing ? (<div>{row.value}</div>) : this.renderEditableRow(row)
+            },
             {
               Header: 'Nickname',
               accessor: 'nickname',
-              Cell: row => !this.state.editing ? (
-                <div>{row.value}</div>
-              ) : this.renderEditableRow(row)
+              Cell: row => !this.state.editing ? (<div>{row.value}</div>) : this.renderEditableRow(row)
             },
             { Header: 'Action',
-              Cell: row => {
+              Cell: () => {
                 return (
                   <div>
                     <Button small onClick={this.onEditRow}>Edit</Button>
