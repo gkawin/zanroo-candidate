@@ -18,12 +18,6 @@ class App extends React.PureComponent {
     editing: { editable: false, at: undefined, payload: { } }
   }
 
-  componentDidMount () {
-    window.addEventListener('keydown', (e) => {
-      e.preventDefault()
-    })
-  }
-
   onAddItem = () => {
     this.setState({ shouldDisplayAddItem: true })
   }
