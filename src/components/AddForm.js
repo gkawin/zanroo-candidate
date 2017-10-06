@@ -18,7 +18,19 @@ class AddForm extends React.PureComponent {
     onCancelItem: PropTypes.func,
     onSaveItem: PropTypes.func,
     shouldDisplay: PropTypes.bool,
-    onChangeInputUpdate: PropTypes.func
+    onChangeAgeUpdate: PropTypes.func,
+    ageValue: PropTypes.number
+  }
+
+  state = { ageValue: '' }
+
+  componentDidMount () {
+    this.setState({ ageValue: this.props.ageValue })
+  }
+
+  onChangeAgeUpdate = async (e, cellInfo) => {
+    await this.setState({ ageValue: e.target.value })
+    console.log(cellInfo)
   }
 
   render () {
@@ -27,9 +39,11 @@ class AddForm extends React.PureComponent {
       <AddFormSection>
         <Input type='text' innerRef={(comp) => { this.name = comp }} />
         <AgeSelection
-          onChangeInputUpdate={this.props.onChangeInputUpdate}
-          cellInfo={{}}
-          value='1'
+          ref='ageSelection'
+          onChangeAgeUpdate={this.onChangeAgeUpdate}
+          value={this.state.ageValue}
+          min={1}
+          max={100}
         />
         <Input type='text' innerRef={(comp) => { this.nickname = comp }} />
         <Button onClick={this.props.onSaveItem}>Save</Button>

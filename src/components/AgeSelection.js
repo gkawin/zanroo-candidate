@@ -24,7 +24,8 @@ const AgeSelection = styled(class AgeSelection extends React.PureComponent {
   static get defaultProps () {
     return {
       range: { max: 100, min: 1 },
-      cellInfo: { column: { id: 'age' } }
+      cellInfo: { column: { id: 'age' } },
+      start: 1
     }
   }
 

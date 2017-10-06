@@ -32,29 +32,34 @@ class App extends React.PureComponent {
   onUpdateRow = async (rowInfo) => {
     await this.setState({ editItem: u({ editable: false })(this.state.editItem) })
     const { at, payload } = this.state.editItem
-    await this.state.store.updateAt(at, payload)
+    // await this.state.store.updateAt(at, payload)
     this.forceUpdate()
   }
 
-  onChangeInputUpdate = ({ target }, cellInfo) => {
+  onChangeInputUpdate = (e, cellInfo) => {
     const affectAtColumn = cellInfo.column.id
     this.setState({
       editItem: {
         ...this.state.editItem,
         payload: {
           ...this.state.editItem.payload,
-          [affectAtColumn]: target.value
+          [affectAtColumn]: e.target.value
         } }
     })
   }
 
+  onChangeAgeUpdate = (e, cellInfo) => {
+    console.log(e, cellInfo)
+  }
+
   onSaveItem = async () => {
-    await this.state.store.insert({
-      name: this.refs.addForm.name.value,
-      age: this.refs.addForm.age.value,
-      nickname: this.refs.addForm.nickname.value
-    })
-    this.forceUpdate()
+    console.log(this.refs.addForm)
+    // await this.state.store.insert({
+    //   name: this.refs.addForm.name.value,
+    //   age: this.refs.addForm.age.value,
+    //   nickname: this.refs.addForm.nickname.value
+    // })
+    // this.forceUpdate()
   }
 
   onDeleteRow = async (rowInfo) => {
@@ -126,6 +131,8 @@ class App extends React.PureComponent {
           shouldDisplay={this.state.shouldDisplayAddItem}
           onSaveItem={this.onSaveItem}
           onCancelItem={this.onCancelItem}
+          onChangeAgeUpdate={this.onChangeAgeUpdate}
+          ageValue={1}
         />
         <Button onClick={this.onAddItem}>Add</Button>
       </div>
