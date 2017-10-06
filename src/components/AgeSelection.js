@@ -5,26 +5,48 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import Select from 'react-select'
 
-const options = [
-  { value: '1', label: 'One' },
-  { value: '2', label: 'Two' }
-]
-
 const AgeSelection = styled(class AgeSelection extends React.PureComponent {
   static propTypes = {
-    onChangeInputUpdate: PropTypes.func,
-    cellInfo: PropTypes.object,
-    value: PropTypes.string,
-    className: PropTypes.string
+    onChangeAgeUpdate: PropTypes.func,
+    cellInfo: PropTypes.shape({
+      column: PropTypes.shape({
+        id: PropTypes.string
+      })
+    }),
+    value: PropTypes.number,
+    className: PropTypes.string,
+    range: PropTypes.shape({
+      min: PropTypes.number,
+      max: PropTypes.number
+    })
   }
+
+  static get defaultProps () {
+    return {
+      range: { max: 100, min: 1 },
+      cellInfo: { column: { id: 'age' } }
+    }
+  }
+
+  getAgeOptions () {
+    const { max, min } = this.props.range
+    let options = []
+    for (let i = min; i <= max; i++) {
+      // HACK: inbound data has possible for two sources.
+      // inject `target` into object for mocking that was came from input element.
+      options.push({ value: i, label: i, target: { value: i } })
+    }
+    return options
+  }
+
   render () {
     return (
       <Select
         className={this.props.className}
         name='form-field-name'
         value={this.props.value}
-        options={options}
-        onChange={(e) => this.props.onChangeInputUpdate(e, this.props.cellInfo)}
+        options={this.getAgeOptions()}
+        onChange={(e) => this.props.onChangeAgeUpdate(e, this.props.cellInfo)}
       />
     )
   }
