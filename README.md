@@ -1,6 +1,6 @@
 # zanroo-candidate
 
-__Only 3 commands to check it out.__
+###Only 3 commands to check it out.__
 
 Don't forget if you clone this repository.
 ```
@@ -11,10 +11,8 @@ yarn
 ```
 yarn dev
 ```
-and have a looks via url
-```
-[to journey](http://localhost:3000)
-```
+and have a looks via url [to journey](http://localhost:3000) http://localhost:3000
+
 
 - Test suite
 ```
