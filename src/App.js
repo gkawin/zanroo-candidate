@@ -18,6 +18,10 @@ class App extends React.PureComponent {
     editItem: { editable: false, at: undefined, payload: { } }
   }
 
+  componentWillMount () {
+    this.state.store.initLocalStorage(10)
+  }
+
   onEditRow = (rowInfo) => {
     this.setState({ editItem: { editable: true, at: rowInfo.index, payload: rowInfo.original } })
   }

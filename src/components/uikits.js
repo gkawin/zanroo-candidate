@@ -10,9 +10,7 @@ export const Button = styled.button`
   line-height: 20px;
   transition: all 0.3s ease-in-out;
   border-radius: 3px;
-  &:hover {
-    background-color: gray;
-  }
+  &:hover { background-color: gray; }
 `
 
 export const Input = styled.input`
