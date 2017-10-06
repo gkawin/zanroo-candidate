@@ -11,7 +11,10 @@ yarn
 ```
 yarn dev
 ```
-and have a looks via url [to journey](http://localhost:3000) http://localhost:3000
+and have a looks via url [to journey](http://localhost:3000) 
+```
+http://localhost:3000
+```
 
 
 - Test suite
