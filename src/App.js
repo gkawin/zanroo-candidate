@@ -68,11 +68,16 @@ class App extends React.PureComponent {
     if (this.state.editItem.at === cellInfo.index) {
       const affectAtColumn = cellInfo.column.id
       const representValue = _.get(this.state.editItem.payload, affectAtColumn, '')
+      const inputElement = cellInfo.column.id === 'age'
+        ? (
+          <div>fooo</div>
+        )
+        : (<Input onChange={(e) => this.onChangeInputUpdate(e, cellInfo)} value={representValue} />)
       return (
         <div
           onBlur={() => this.onUpdateRow(cellInfo)}
         >
-          <Input onChange={(e) => this.onChangeInputUpdate(e, cellInfo)} value={representValue} />
+          {inputElement}
         </div>
       )
     } else {
