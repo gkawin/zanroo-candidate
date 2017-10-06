@@ -17,14 +17,6 @@ class App extends React.PureComponent {
     editItem: { editable: false, at: undefined, payload: { } }
   }
 
-  onAddItem = () => {
-    this.setState({ shouldDisplayAddItem: true })
-  }
-
-  onCancelItem = () => {
-    this.setState({ shouldDisplayAddItem: false })
-  }
-
   onEditRow = (rowInfo) => {
     this.setState({ editItem: { editable: true, at: rowInfo.index, payload: rowInfo.original } })
   }
@@ -52,14 +44,9 @@ class App extends React.PureComponent {
     console.log(e, cellInfo)
   }
 
-  onSaveItem = async () => {
-    console.log(this.refs.addForm)
-    // await this.state.store.insert({
-    //   name: this.refs.addForm.name.value,
-    //   age: this.refs.addForm.age.value,
-    //   nickname: this.refs.addForm.nickname.value
-    // })
-    // this.forceUpdate()
+  onSaveItem = async (payload) => {
+    await this.state.store.insert(payload)
+    this.forceUpdate()
   }
 
   onDeleteRow = async (rowInfo) => {
@@ -127,14 +114,10 @@ class App extends React.PureComponent {
           ]}
         />
         <AddForm
-          ref='addForm'
-          shouldDisplay={this.state.shouldDisplayAddItem}
           onSaveItem={this.onSaveItem}
-          onCancelItem={this.onCancelItem}
-          onChangeAgeUpdate={this.onChangeAgeUpdate}
           ageValue={1}
         />
-        <Button onClick={this.onAddItem}>Add</Button>
+
       </div>
     )
   }

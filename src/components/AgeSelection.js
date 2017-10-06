@@ -44,7 +44,7 @@ const AgeSelection = styled(class AgeSelection extends React.PureComponent {
     return (
       <Select
         className={this.props.className}
-        name='form-field-name'
+        name='age'
         value={this.props.value}
         options={this.getAgeOptions()}
         onChange={(e) => this.props.onChangeAgeUpdate(e, this.props.cellInfo)}
