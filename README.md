@@ -13,7 +13,7 @@ yarn dev
 ```
 and have a looks via url
 ```
-http://localhost:3000
+[to journey](http://localhost:3000)
 ```
 
 - Test suite
