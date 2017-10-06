@@ -1,6 +1,6 @@
 # zanroo-candidate
 
-###Only 3 commands to check it out.__
+### Only 3 commands to check it out.
 
 Don't forget if you clone this repository.
 ```
