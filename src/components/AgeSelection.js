@@ -48,6 +48,7 @@ const AgeSelection = styled(class AgeSelection extends React.PureComponent {
         value={this.props.value}
         options={this.getAgeOptions()}
         onChange={(e) => this.props.onChangeAgeUpdate(e, this.props.cellInfo)}
+        menuContainerStyle={{ 'zIndex': 999 }}
       />
     )
   }

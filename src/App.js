@@ -9,6 +9,7 @@ import u from 'updeep'
 import Storage from './lib/Storage'
 import { Button, Input } from './components/uikits'
 import AddForm from './components/AddForm'
+import AgeSelection from './components/AgeSelection'
 
 class App extends React.PureComponent {
   state = {
@@ -24,7 +25,7 @@ class App extends React.PureComponent {
   onUpdateRow = async (rowInfo) => {
     await this.setState({ editItem: u({ editable: false })(this.state.editItem) })
     const { at, payload } = this.state.editItem
-    // await this.state.store.updateAt(at, payload)
+    await this.state.store.updateAt(at, payload)
     this.forceUpdate()
   }
 
@@ -38,10 +39,6 @@ class App extends React.PureComponent {
           [affectAtColumn]: e.target.value
         } }
     })
-  }
-
-  onChangeAgeUpdate = (e, cellInfo) => {
-    console.log(e, cellInfo)
   }
 
   onSaveItem = async (payload) => {
@@ -62,7 +59,16 @@ class App extends React.PureComponent {
       const representValue = _.get(this.state.editItem.payload, affectAtColumn, '')
       const inputElement = cellInfo.column.id === 'age'
         ? (
-          <div>fooo</div>
+          <AgeSelection
+            onChangeAgeUpdate={(e, cellInfo) => this.onChangeInputUpdate(
+              // HACK: for standard DOM element, should inject `name` into element properties.
+              u({ target: { name: 'age' } })(e),
+              cellInfo
+            )}
+            value={representValue}
+            min={1}
+            max={100}
+          />
         )
         : (<Input onChange={(e) => this.onChangeInputUpdate(e, cellInfo)} value={representValue} />)
       return (
@@ -105,7 +111,7 @@ class App extends React.PureComponent {
               Cell: (row) => {
                 return (
                   <div>
-                    <Button small onClick={() => this.onEditRow(row)}>Edit</Button>
+                    <Button style={{ marginRight: '10px' }} small onClick={() => this.onEditRow(row)}>Edit</Button>
                     <Button small onClick={() => this.onDeleteRow(row)}>Delete</Button>
                   </div>
                 )
@@ -117,7 +123,6 @@ class App extends React.PureComponent {
           onSaveItem={this.onSaveItem}
           ageValue={1}
         />
-
       </div>
     )
   }

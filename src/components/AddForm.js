@@ -14,6 +14,10 @@ const AddFormSection = styled.div`
   justify-content: space-around;
 `
 
+const AddFormOuter = styled.div`
+  margin-top: 10px;
+`
+
 class AddForm extends React.PureComponent {
   static propTypes = {
     onSaveItem: PropTypes.func,
@@ -57,28 +61,34 @@ class AddForm extends React.PureComponent {
     this.setState({ [id]: e.target.value })
   }
 
-  render () {
-    if (!this.state.shouldDisplay) return (<Button onClick={this.onShowFormAddItem}>Add</Button>)
+  renderForm = () => {
+    if (!this.state.shouldDisplay) return null
     return (
-      <div>
-        <AddFormSection>
-          <Input type='text' name='name' onChange={this.onChangeInput} />
-          <AgeSelection
-            onChangeAgeUpdate={(e, cellInfo) => this.onChangeInput(
+      <AddFormSection>
+        <Input type='text' name='name' onChange={this.onChangeInput} />
+        <AgeSelection
+          onChangeAgeUpdate={(e, cellInfo) => this.onChangeInput(
               // HACK: for standard DOM element, should inject `name` into element properties.
               u({ target: { name: 'age' } })(e),
               cellInfo
             )}
-            value={this.state.age}
-            min={1}
-            max={100}
+          value={this.state.age}
+          min={1}
+          max={100}
           />
-          <Input type='text' name='nickname' onChange={this.onChangeInput} />
-          <Button onClick={this.onSaveItem}>Save</Button>
-          <Button onClick={this.onHideFormAddItem}>Cancel</Button>
-        </AddFormSection>
+        <Input type='text' name='nickname' onChange={this.onChangeInput} />
+        <Button onClick={this.onSaveItem}>Save</Button>
+        <Button onClick={this.onHideFormAddItem}>Cancel</Button>
+      </AddFormSection>
+    )
+  }
+
+  render () {
+    return (
+      <AddFormOuter>
+        {this.renderForm()}
         <Button onClick={this.onShowFormAddItem}>Add</Button>
-      </div>
+      </AddFormOuter >
     )
   }
 }
